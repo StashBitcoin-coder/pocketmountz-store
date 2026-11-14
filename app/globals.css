@@ -80,3 +80,6 @@ footer .fsub{font-size:13px;color:var(--text2);margin-bottom:26px;}
 .flinks{margin-top:30px;font-size:11px;color:var(--text2);letter-spacing:.05em;}
 
 @media(max-width:720px){.crown{grid-template-columns:1fr;}.beats{grid-template-columns:1fr;}}
+
+.ai .av{transition:transform .15s ease;}
+.ai:hover .av{transform:translateY(-3px);}
