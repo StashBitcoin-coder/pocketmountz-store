@@ -1,36 +1,122 @@
 import { shopify } from '../lib/shopify';
+import ThemeToggle from './ThemeToggle';
 
 export const dynamic = 'force-dynamic';
 
+const ARTISTS = [
+  { i: 'JD', n: 'Jane Doe' },
+  { i: 'MC', n: 'Mia Chen' },
+  { i: 'LP', n: 'Leo Park' },
+  { i: 'RV', n: 'Ray Vasquez' },
+  { i: 'NO', n: 'Nina Osei' }
+];
+
+function money(p) {
+  if (!p) return '';
+  try { return '$' + Math.round(Number(p.amount)).toLocaleString(); } catch (e) { return ''; }
+}
+
 export default async function Home() {
-  let ok = false, shopName = '', items = [], err = '';
+  let products = [];
   try {
-    const d = await shopify('{ shop { name } products(first:5){ edges { node { title handle } } } }');
-    ok = true;
-    shopName = d.shop.name;
-    items = d.products.edges.map(function (e) { return e.node; });
-  } catch (e) { err = String((e && e.message) || e); }
+    const d = await shopify('{ products(first:8){ edges { node { title handle priceRange { minVariantPrice { amount currencyCode } } images(first:1){ edges { node { url } } } } } } }');
+    products = d.products.edges.map(function (e) { return e.node; });
+  } catch (e) {}
+
+  const crown = products[0];
+  const grid = products.slice(1, 6);
 
   return (
-    <main style={{ maxWidth: 720, margin: '0 auto', padding: '60px 20px' }}>
-      <h1 style={{ color: 'var(--white)', fontSize: 32, marginBottom: 8 }}>PocketMountz</h1>
-      <p style={{ color: 'var(--gold)', marginBottom: 24, letterSpacing: '.05em' }}>Store skeleton — connection check</p>
-      {ok ? (
-        <div>
-          <p style={{ marginBottom: 12 }}>Connected to Shopify: <b style={{ color: 'var(--white)' }}>{shopName}</b></p>
-          <p style={{ marginBottom: 8 }}>Products found: {items.length}</p>
-          <ul style={{ paddingLeft: 18 }}>
-            {items.map(function (p) { return <li key={p.handle} style={{ color: 'var(--text)' }}>{p.title}</li>; })}
-          </ul>
-          {items.length === 0 ? <p style={{ color: 'var(--text)' }}>No products yet — that is fine, we will add them.</p> : null}
+    <>
+      <header>
+        <div className="hbar">
+          <a className="logo" href="/"><img src="/logo.png" alt="PocketMountz" /></a>
+          <nav className="hnav">
+            <a>Collection</a><a>Drops</a><a>Auctions</a><a>About</a>
+            <ThemeToggle />
+          </nav>
         </div>
-      ) : (
-        <div>
-          <p style={{ color: '#e07a5f', marginBottom: 10 }}>Not connected yet.</p>
-          <pre style={{ whiteSpace: 'pre-wrap', color: '#888', fontSize: 12 }}>{err}</pre>
-          <p style={{ marginTop: 12 }}>Check the two environment variables in Vercel, then redeploy.</p>
-        </div>
-      )}
-    </main>
+      </header>
+
+      <div className="wrap">
+
+        <section className="band first">
+          <div className="slabel">Real Fine Artists</div>
+          <div className="stitle">The hands behind the work.</div>
+          <div className="artistrow">
+            {ARTISTS.map(function (a) {
+              return (
+                <div className="ai" key={a.n}>
+                  <div className="av">{a.i}</div>
+                  <div className="nm">{a.n}</div>
+                </div>
+              );
+            })}
+          </div>
+          <p className="artist-note">Every piece is credited, signed, and numbered. The artist is the art.</p>
+        </section>
+
+        {crown ? (
+          <section className="band">
+            <div className="slabel">The Crown</div>
+            <div className="stitle">One piece. One of one.</div>
+            <div className="crown">
+              <div className="cart">
+                {crown.images.edges[0] ? <img src={crown.images.edges[0].node.url} alt={crown.title} /> : <span className="ph">PM</span>}
+              </div>
+              <div className="ct">
+                <div className="ce">Signed &middot; Authenticated on Bitcoin</div>
+                <h3>{crown.title}</h3>
+                <p>The moment, made permanent &mdash; a one-of-one fine collectable, inscribed on the Bitcoin blockchain the day it was made. The only signed piece that carries its own proof of authenticity.</p>
+                <div className="pricechip">{money(crown.priceRange.minVariantPrice)}</div>
+              </div>
+            </div>
+          </section>
+        ) : null}
+
+        <section className="band">
+          <div className="slabel">Why It&rsquo;s Different</div>
+          <div className="stitle">Not another trading card.</div>
+          <div className="beats">
+            <div className="beat"><div className="bi">&#9632;</div><h4>Fine art, not prints</h4><p>Archival pigment on metallic pearl, face-mounted to museum glass, diamond-edge finished. A real object, built to last.</p></div>
+            <div className="beat"><div className="bi">&#10022;</div><h4>Signed by the athlete</h4><p>Select works are hand-signed &mdash; licensed, authentic, and rare.</p></div>
+            <div className="beat"><div className="bi">&#9670;</div><h4>Proven on Bitcoin</h4><p>An Ordinal inscription seals provenance on the oldest blockchain. Verifiable by anyone, forever.</p></div>
+          </div>
+        </section>
+
+        {grid.length ? (
+          <section className="band">
+            <div className="slabel">A First Look</div>
+            <div className="stitle">Preview the collection.</div>
+            <div className="pgrid">
+              {grid.map(function (p) {
+                var img = p.images.edges[0] ? p.images.edges[0].node.url : null;
+                return (
+                  <a className="pcard" href="/" key={p.handle}>
+                    <div className="pimg">{img ? <img src={img} alt={p.title} /> : <span className="ph">PM</span>}</div>
+                    <div className="pm">
+                      <div className="pt">{p.title}</div>
+                      <div className="pp">{money(p.priceRange.minVariantPrice)}</div>
+                    </div>
+                  </a>
+                );
+              })}
+            </div>
+            <div className="center"><a className="btn gold" href="/">Browse everything</a></div>
+          </section>
+        ) : null}
+
+      </div>
+
+      <footer>
+        <div className="fbf">New drops, first.</div>
+        <div className="fsub">Join the list for new releases and auctions.</div>
+        <form className="capture">
+          <input type="email" placeholder="your@email.com" aria-label="email" />
+          <button type="button">Get First Access</button>
+        </form>
+        <div className="flinks">PocketMountz &nbsp;&middot;&nbsp; Real fine art, real artists &nbsp;&middot;&nbsp; Verify on-chain</div>
+      </footer>
+    </>
   );
 }
