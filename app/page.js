@@ -1,5 +1,5 @@
 import { shopify } from '../lib/shopify';
-import ThemeToggle from './ThemeToggle';
+import Header from './Header';
 
 export const dynamic = 'force-dynamic';
 
@@ -28,16 +28,7 @@ export default async function Home() {
 
   return (
     <>
-      <header>
-        <div className="hbar">
-          <a className="logo" href="/"><img src="/logo.png" alt="PocketMountz" /></a>
-          <nav className="hnav">
-            <a>Collection</a><a>Drops</a><a>Auctions</a><a>About</a>
-            <ThemeToggle />
-          </nav>
-        </div>
-      </header>
-
+      <Header />
       <div className="wrap">
 
         <section className="band first">
@@ -92,7 +83,7 @@ export default async function Home() {
               {grid.map(function (p) {
                 var img = p.images.edges[0] ? p.images.edges[0].node.url : null;
                 return (
-                  <a className="pcard" href="/" key={p.handle}>
+                  <a className="pcard" href="/collection" key={p.handle}>
                     <div className="pimg">{img ? <img src={img} alt={p.title} /> : <span className="ph">PM</span>}</div>
                     <div className="pm">
                       <div className="pt">{p.title}</div>
@@ -102,7 +93,7 @@ export default async function Home() {
                 );
               })}
             </div>
-            <div className="center"><a className="btn gold" href="/">Browse everything</a></div>
+            <div className="center"><a className="btn gold" href="/collection">Browse everything</a></div>
           </section>
         ) : null}
 
