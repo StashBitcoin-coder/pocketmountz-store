@@ -24,7 +24,7 @@ export default function Browse({ products }) {
   const shown = products;
 
   return (
-    <section className="band first">
+    <section className="band first collection-band">
       <p className="eyebrow">Curry · The Collection</p>
       <h1 className="stitle">The Collection</h1>
       <p className="sub">Every piece in one place. Tap an artist, or filter the lot.</p>
