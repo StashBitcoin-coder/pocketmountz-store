@@ -13,7 +13,7 @@ export default async function Collection() {
   return (
     <>
       <Header />
-      <div className="wrap">
+      <div className="wrap collection-wrap">
         <Browse products={products} />
       </div>
     </>
