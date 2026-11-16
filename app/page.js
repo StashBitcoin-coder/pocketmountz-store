@@ -18,7 +18,7 @@ export default async function Home() {
   try {
     const d = await shopify(`{
       collections(first: 20) {
-        edges { node { title handle } }
+        edges { node { title handle image { url } } }
       }
       products(first: 8) {
         edges { node { title handle priceRange { minVariantPrice { amount currencyCode } } images(first:1){ edges { node { url } } } } }
@@ -43,7 +43,9 @@ export default async function Home() {
             {artists.map(function (a) {
               return (
                 <div className="ai" key={a.handle}>
-                  <div className="av">{initials(a.title)}</div>
+                  <div className="av">
+                    {a.image ? <img src={a.image.url} alt={a.title} /> : initials(a.title)}
+                  </div>
                   <div className="nm">{a.title}</div>
                 </div>
               );
