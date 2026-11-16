@@ -37,8 +37,22 @@ export default function Browse({ collections }) {
     if (tier !== 'all') shown = shown.filter(function (p) { return p.tags.includes('tier:' + tier); });
     if (status === 'for-sale') shown = shown.filter(function (p) { return p.availableForSale; });
     if (status === 'sold') shown = shown.filter(function (p) { return !p.availableForSale; });
-    if (sale === 'auction') shown = shown.filter(function (p) { return p.tags.includes('sale:auction'); });
-    if (sale === 'buy-now') shown = shown.filter(function (p) { return !p.tags.includes('sale:auction'); });
+    // sale filter only meaningful when not filtering for sold
+    if (status !== 'sold') {
+      if (sale === 'auction') shown = shown.filter(function (p) { return p.tags.includes('sale:auction'); });
+      if (sale === 'buy-now') shown = shown.filter(function (p) { return !p.tags.includes('sale:auction'); });
+    }
+  }
+
+  function handleStatus(val) {
+    setStatus(val);
+    if (val === 'sold') setSale('all');
+  }
+
+  function clearFilters() {
+    setTier('all');
+    setStatus('all');
+    setSale('all');
   }
 
   return (
@@ -85,19 +99,20 @@ export default function Browse({ collections }) {
               </select>
             </div>
             <div className="sel">
-              <select value={status} onChange={function (e) { setStatus(e.target.value); }}>
+              <select value={status} onChange={function (e) { handleStatus(e.target.value); }}>
                 <option value="all">All Status</option>
                 <option value="for-sale">For Sale</option>
                 <option value="sold">Sold</option>
               </select>
             </div>
-            <div className="sel">
-              <select value={sale} onChange={function (e) { setSale(e.target.value); }}>
+            <div className={'sel' + (status === 'sold' ? ' sel-disabled' : '')}>
+              <select value={sale} disabled={status === 'sold'} onChange={function (e) { setSale(e.target.value); }}>
                 <option value="all">All Sales</option>
                 <option value="buy-now">Buy Now</option>
                 <option value="auction">Auction</option>
               </select>
             </div>
+            <button className="clear-btn" onClick={clearFilters}>Clear</button>
           </div>
           <p className="bcount"><b>{shown.length}</b> works</p>
           <div className="pgrid">
@@ -105,12 +120,17 @@ export default function Browse({ collections }) {
               var img = p.images.edges[0] ? p.images.edges[0].node.url : null;
               return (
                 <button className="pcard" key={p.handle} onClick={function () { setModal(p); }}>
-                  <div className="pimg">{img ? <img src={img} alt={p.title} /> : <span className="ph">PM</span>}</div>
+                  <div className="pimg">
+                    {img ? <img src={img} alt={p.title} /> : <span className="ph">PM</span>}
+                    {!p.availableForSale && <div className="sold-badge">SOLD</div>}
+                  </div>
                   <div className="pm">
                     <div className="pt">{p.title}</div>
                     <div className="pfoot">
                       <span className="pp">{money(p.priceRange.minVariantPrice)}</span>
-                      <span className="btag">{p.tags.includes('sale:auction') ? 'Auction' : 'Buy Now'}</span>
+                      <span className={'btag' + (!p.availableForSale ? ' btag-sold' : '')}>
+                        {!p.availableForSale ? 'Sold' : p.tags.includes('sale:auction') ? 'Auction' : 'Buy Now'}
+                      </span>
                     </div>
                   </div>
                 </button>
@@ -135,11 +155,15 @@ export default function Browse({ collections }) {
                 ? <img src={modal.images.edges[0].node.url} alt={modal.title} />
                 : <span className="ph">PM</span>
               }
+              {!modal.availableForSale && <div className="modal-sold-banner">SOLD</div>}
             </div>
             <div className="modal-info">
               <h2>{modal.title}</h2>
               <div className="modal-price">{money(modal.priceRange.minVariantPrice)}</div>
-              {modal.description && <p className="modal-desc">{modal.description}</p>}
+              {modal.availableForSale
+                ? modal.description && <p className="modal-desc">{modal.description}</p>
+                : <p className="modal-locked">🔒 Sign in to view details on sold works.</p>
+              }
               {modal.tags.length > 0 && (
                 <div className="modal-tags">
                   {modal.tags.map(function (t) {
@@ -147,14 +171,16 @@ export default function Browse({ collections }) {
                   })}
                 </div>
               )}
-              <a
-                className="btn gold modal-btn"
-                href={'https://qwgc1w-vx.myshopify.com/products/' + modal.handle}
-                target="_blank"
-                rel="noopener noreferrer"
-              >
-                {modal.tags.includes('sale:auction') ? 'View Auction' : 'Buy Now'}
-              </a>
+              {modal.availableForSale && (
+                <a
+                  className="btn gold modal-btn"
+                  href={'https://qwgc1w-vx.myshopify.com/products/' + modal.handle}
+                  target="_blank"
+                  rel="noopener noreferrer"
+                >
+                  {modal.tags.includes('sale:auction') ? 'View Auction' : 'Buy Now'}
+                </a>
+              )}
             </div>
           </div>
         </div>

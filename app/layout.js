@@ -7,6 +7,11 @@ export const metadata = {
 
 export default function RootLayout({ children }) {
   return (
-    <html lang="en"><body>{children}</body></html>
+    <html lang="en">
+      <body>
+        <script dangerouslySetInnerHTML={{ __html: `try{if(localStorage.getItem('theme')==='light'){document.body.classList.add('lightmode');}}catch(e){}` }} />
+        {children}
+      </body>
+    </html>
   );
 }

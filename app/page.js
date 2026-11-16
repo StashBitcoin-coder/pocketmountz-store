@@ -42,12 +42,12 @@ export default async function Home() {
           <div className="artistrow">
             {artists.map(function (a) {
               return (
-                <div className="ai" key={a.handle}>
+                <a className="ai" href="/collection" key={a.handle}>
                   <div className="av">
                     {a.image ? <img src={a.image.url} alt={a.title} /> : initials(a.title)}
                   </div>
                   <div className="nm">{a.title}</div>
-                </div>
+                </a>
               );
             })}
           </div>
