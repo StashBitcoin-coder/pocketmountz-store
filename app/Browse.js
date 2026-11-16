@@ -89,7 +89,16 @@ export default function Browse({ collections }) {
 
       {artist !== null && artist !== 'all' && (function () {
         var col = collections.find(function (c) { return c.handle === artist; });
-        return col && col.description ? <p className="artist-bio">{col.description}</p> : null;
+        if (!col) return null;
+        return (
+          <div className="artist-header">
+            {col.image && <img className="artist-header-img" src={col.image.url} alt={col.title} />}
+            <div className="artist-header-text">
+              <div className="artist-header-name">{col.title}</div>
+              {col.description && <p className="artist-bio">{col.description}</p>}
+            </div>
+          </div>
+        );
       })()}
 
       {artist !== null && (
