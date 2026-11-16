@@ -13,6 +13,7 @@ export default async function Collection() {
           node {
             title
             handle
+            description
             image { url }
             products(first: 50) {
               edges {

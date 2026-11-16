@@ -87,6 +87,11 @@ export default function Browse({ collections }) {
         })}
       </div>
 
+      {artist !== null && artist !== 'all' && (function () {
+        var col = collections.find(function (c) { return c.handle === artist; });
+        return col && col.description ? <p className="artist-bio">{col.description}</p> : null;
+      })()}
+
       {artist !== null && (
         <>
           <div className="controls">
