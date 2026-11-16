@@ -15,6 +15,7 @@ export default async function Collection() {
             handle
             description
             image { url }
+            metafield(namespace: "custom", key: "sort_order") { value }
             products(first: 50) {
               edges {
                 node {
@@ -33,6 +34,11 @@ export default async function Collection() {
       }
     }`);
     collections = d.collections.edges.map(function (e) { return e.node; });
+    collections.sort(function (a, b) {
+      var ao = a.metafield ? parseInt(a.metafield.value) : 999;
+      var bo = b.metafield ? parseInt(b.metafield.value) : 999;
+      return ao - bo;
+    });
   } catch (e) {}
   return (
     <>
