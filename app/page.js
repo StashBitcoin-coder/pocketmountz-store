@@ -42,7 +42,7 @@ export default async function Home() {
           <div className="artistrow">
             {artists.map(function (a) {
               return (
-                <a className="ai" href="/collection" key={a.handle}>
+                <a className="ai" href={'/collection?artist=' + a.handle} key={a.handle}>
                   <div className="av">
                     {a.image ? <img src={a.image.url} alt={a.title} /> : initials(a.title)}
                   </div>

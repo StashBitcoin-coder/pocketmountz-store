@@ -1,5 +1,5 @@
 'use client';
-import { useState } from 'react';
+import { useState, useEffect } from 'react';
 
 function money(p) {
   if (!p) return '';
@@ -12,6 +12,12 @@ function initials(name) {
 
 export default function Browse({ collections }) {
   const [artist, setArtist] = useState(null);
+
+  useEffect(function () {
+    var params = new URLSearchParams(window.location.search);
+    var a = params.get('artist');
+    if (a) setArtist(a);
+  }, []);
   const [tier, setTier] = useState('all');
   const [status, setStatus] = useState('all');
   const [sale, setSale] = useState('all');
