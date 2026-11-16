@@ -12,16 +12,16 @@ function initials(name) {
 
 export default function Browse({ collections }) {
   const [artist, setArtist] = useState(null);
+  const [tier, setTier] = useState('all');
+  const [status, setStatus] = useState('all');
+  const [sale, setSale] = useState('all');
+  const [modal, setModal] = useState(null);
 
   useEffect(function () {
     var params = new URLSearchParams(window.location.search);
     var a = params.get('artist');
     if (a) setArtist(a);
   }, []);
-  const [tier, setTier] = useState('all');
-  const [status, setStatus] = useState('all');
-  const [sale, setSale] = useState('all');
-  const [modal, setModal] = useState(null);
 
   const seen = new Set();
   const allProducts = [];
@@ -43,7 +43,6 @@ export default function Browse({ collections }) {
     if (tier !== 'all') shown = shown.filter(function (p) { return p.tags.includes('tier:' + tier); });
     if (status === 'for-sale') shown = shown.filter(function (p) { return p.availableForSale; });
     if (status === 'sold') shown = shown.filter(function (p) { return !p.availableForSale; });
-    // sale filter only meaningful when not filtering for sold
     if (status !== 'sold') {
       if (sale === 'auction') shown = shown.filter(function (p) { return p.tags.includes('sale:auction'); });
       if (sale === 'buy-now') shown = shown.filter(function (p) { return !p.tags.includes('sale:auction'); });
@@ -61,110 +60,127 @@ export default function Browse({ collections }) {
     setSale('all');
   }
 
+  var selectedCol = artist && artist !== 'all'
+    ? collections.find(function (c) { return c.handle === artist; })
+    : null;
+
+  var artistNav = (
+    <div className="artist-col">
+      <button
+        className={'browse-ai' + (artist === 'all' ? ' active' : '')}
+        onClick={function () { setArtist('all'); }}
+      >
+        <span className="bav allav">◆</span>
+        <span className="blbl">All</span>
+      </button>
+      {collections.map(function (c) {
+        return (
+          <button
+            className={'browse-ai' + (artist === c.handle ? ' active' : '')}
+            key={c.handle}
+            onClick={function () { setArtist(c.handle); }}
+          >
+            {c.image
+              ? <img className="bavimg" src={c.image.url} alt={c.title} />
+              : <span className="bav">{initials(c.title)}</span>
+            }
+            <span className="blbl">{c.title}</span>
+          </button>
+        );
+      })}
+    </div>
+  );
+
   return (
     <div>
       <p className="eyebrow">The Collection</p>
       <h1 className="col-title">The Collection</h1>
       <p className="sub">Every piece in one place. Tap an artist, or filter the lot.</p>
 
-      <div className="arowlabel">Artists</div>
-      <div className="browse-arow">
-        <button
-          className={'browse-ai' + (artist === 'all' ? ' active' : '')}
-          onClick={function () { setArtist('all'); }}
-        >
-          <span className="bav allav">◆</span>
-          <span className="blbl">All</span>
-        </button>
-        {collections.map(function (c) {
-          return (
-            <button
-              className={'browse-ai' + (artist === c.handle ? ' active' : '')}
-              key={c.handle}
-              onClick={function () { setArtist(c.handle); }}
-            >
-              {c.image
-                ? <img className="bavimg" src={c.image.url} alt={c.title} />
-                : <span className="bav">{initials(c.title)}</span>
-              }
-              <span className="blbl">{c.title}</span>
-            </button>
-          );
-        })}
+      {/* mobile-only carousel row */}
+      <div className="browse-mobile-row">
+        <div className="arowlabel">Artists</div>
+        {artistNav}
       </div>
 
-      {artist !== null && artist !== 'all' && (function () {
-        var col = collections.find(function (c) { return c.handle === artist; });
-        if (!col) return null;
-        return (
-          <div className="artist-header">
-            {col.image && <img className="artist-header-img" src={col.image.url} alt={col.title} />}
-            <div className="artist-header-text">
-              <div className="artist-header-name">{col.title}</div>
-              {col.description && <p className="artist-bio">{col.description}</p>}
+      <div className="browse-layout">
+        <div className="browse-main">
+          {selectedCol && (
+            <div className="artist-header">
+              {selectedCol.image && <img className="artist-header-img" src={selectedCol.image.url} alt={selectedCol.title} />}
+              <div className="artist-header-text">
+                <div className="artist-header-name">{selectedCol.title}</div>
+                {selectedCol.description && <p className="artist-bio">{selectedCol.description}</p>}
+              </div>
             </div>
-          </div>
-        );
-      })()}
+          )}
 
-      {artist !== null && (
-        <>
-          <div className="controls">
-            <div className="sel">
-              <select value={tier} onChange={function (e) { setTier(e.target.value); }}>
-                <option value="all">All Tiers</option>
-                <option value="plain">Plain</option>
-                <option value="ordinal">Ordinal</option>
-                <option value="signed">Signed</option>
-              </select>
-            </div>
-            <div className="sel">
-              <select value={status} onChange={function (e) { handleStatus(e.target.value); }}>
-                <option value="all">All Status</option>
-                <option value="for-sale">For Sale</option>
-                <option value="sold">Sold</option>
-              </select>
-            </div>
-            <div className={'sel' + (status === 'sold' ? ' sel-disabled' : '')}>
-              <select value={sale} disabled={status === 'sold'} onChange={function (e) { setSale(e.target.value); }}>
-                <option value="all">All Sales</option>
-                <option value="buy-now">Buy Now</option>
-                <option value="auction">Auction</option>
-              </select>
-            </div>
-            <button className="clear-btn" onClick={clearFilters}>Clear</button>
-          </div>
-          <p className="bcount"><b>{shown.length}</b> works</p>
-          <div className="pgrid">
-            {shown.map(function (p) {
-              var img = p.images.edges[0] ? p.images.edges[0].node.url : null;
-              return (
-                <button className="pcard" key={p.handle} onClick={function () { setModal(p); }}>
-                  <div className="pimg">
-                    {img ? <img src={img} alt={p.title} /> : <span className="ph">PM</span>}
-                    {!p.availableForSale && <div className="sold-badge">SOLD</div>}
-                  </div>
-                  <div className="pm">
-                    <div className="pt">{p.title}</div>
-                    <div className="pfoot">
-                      <span className="pp">{money(p.priceRange.minVariantPrice)}</span>
-                      <span className={'btag' + (!p.availableForSale ? ' btag-sold' : '')}>
-                        {!p.availableForSale ? 'Sold' : p.tags.includes('sale:auction') ? 'Auction' : 'Buy Now'}
-                      </span>
-                    </div>
-                  </div>
-                </button>
-              );
-            })}
-          </div>
-        </>
-      )}
+          {artist !== null && (
+            <>
+              <div className="controls">
+                <div className="sel">
+                  <select value={tier} onChange={function (e) { setTier(e.target.value); }}>
+                    <option value="all">All Tiers</option>
+                    <option value="plain">Plain</option>
+                    <option value="ordinal">Ordinal</option>
+                    <option value="signed">Signed</option>
+                  </select>
+                </div>
+                <div className="sel">
+                  <select value={status} onChange={function (e) { handleStatus(e.target.value); }}>
+                    <option value="all">All Status</option>
+                    <option value="for-sale">For Sale</option>
+                    <option value="sold">Sold</option>
+                  </select>
+                </div>
+                <div className={'sel' + (status === 'sold' ? ' sel-disabled' : '')}>
+                  <select value={sale} disabled={status === 'sold'} onChange={function (e) { setSale(e.target.value); }}>
+                    <option value="all">All Sales</option>
+                    <option value="buy-now">Buy Now</option>
+                    <option value="auction">Auction</option>
+                  </select>
+                </div>
+                <button className="clear-btn" onClick={clearFilters}>Clear</button>
+              </div>
+              <p className="bcount"><b>{shown.length}</b> works</p>
+              <div className="pgrid">
+                {shown.map(function (p) {
+                  var img = p.images.edges[0] ? p.images.edges[0].node.url : null;
+                  return (
+                    <button className="pcard" key={p.handle} onClick={function () { setModal(p); }}>
+                      <div className="pimg">
+                        {img ? <img src={img} alt={p.title} /> : <span className="ph">PM</span>}
+                        {!p.availableForSale && <div className="sold-badge">SOLD</div>}
+                      </div>
+                      <div className="pm">
+                        <div className="pt">{p.title}</div>
+                        <div className="pfoot">
+                          <span className="pp">{money(p.priceRange.minVariantPrice)}</span>
+                          <span className={'btag' + (!p.availableForSale ? ' btag-sold' : '')}>
+                            {!p.availableForSale ? 'Sold' : p.tags.includes('sale:auction') ? 'Auction' : 'Buy Now'}
+                          </span>
+                        </div>
+                      </div>
+                    </button>
+                  );
+                })}
+              </div>
+            </>
+          )}
 
-      {artist === null && (
-        <div className="empty-state">
-          <p>Select an artist or <strong>All</strong> to browse the collection.</p>
+          {artist === null && (
+            <div className="empty-state">
+              <p>Select an artist or <strong>All</strong> to browse the collection.</p>
+            </div>
+          )}
         </div>
-      )}
+
+        {/* desktop-only sidebar */}
+        <aside className="browse-sidebar">
+          <div className="arowlabel">Artists</div>
+          {artistNav}
+        </aside>
+      </div>
 
       {modal && (
         <div className="modal-overlay" onClick={function () { setModal(null); }}>
