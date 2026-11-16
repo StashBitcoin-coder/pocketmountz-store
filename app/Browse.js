@@ -63,12 +63,15 @@ export default function Browse({ collections }) {
 
   return (
     <div>
-      <p className="eyebrow">The Collection</p>
-      <h1 className="col-title">The Collection</h1>
-      <p className="sub">Every piece in one place. Tap an artist, or filter the lot.</p>
-
-      <div className="arowlabel">Artists</div>
-      <div className="browse-arow">
+      <div className="browse-top">
+        <div className="browse-titles">
+          <p className="eyebrow">The Collection</p>
+          <h1 className="col-title">The Collection</h1>
+          <p className="sub">Every piece in one place. Tap an artist, or filter the lot.</p>
+        </div>
+        <div className="browse-arow-wrap">
+          <div className="arowlabel">Artists</div>
+          <div className="browse-arow">
         <button
           className={'browse-ai' + (artist === 'all' ? ' active' : '')}
           onClick={function () { setArtist('all'); }}
@@ -91,6 +94,8 @@ export default function Browse({ collections }) {
             </button>
           );
         })}
+          </div>
+        </div>
       </div>
 
       {artist !== null && artist !== 'all' && (function () {
