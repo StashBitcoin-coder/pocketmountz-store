@@ -3,24 +3,29 @@ import Header from './Header';
 
 export const dynamic = 'force-dynamic';
 
-const ARTISTS = [
-  { i: 'JD', n: 'Jane Doe' },
-  { i: 'MC', n: 'Mia Chen' },
-  { i: 'LP', n: 'Leo Park' },
-  { i: 'RV', n: 'Ray Vasquez' },
-  { i: 'NO', n: 'Nina Osei' }
-];
-
 function money(p) {
   if (!p) return '';
   try { return '$' + Math.round(Number(p.amount)).toLocaleString(); } catch (e) { return ''; }
 }
 
+function initials(name) {
+  return name.split(' ').map(function (w) { return w[0]; }).join('').slice(0, 2).toUpperCase();
+}
+
 export default async function Home() {
   let products = [];
+  let artists = [];
   try {
-    const d = await shopify('{ products(first:8){ edges { node { title handle priceRange { minVariantPrice { amount currencyCode } } images(first:1){ edges { node { url } } } } } } }');
+    const d = await shopify(`{
+      collections(first: 20) {
+        edges { node { title handle } }
+      }
+      products(first: 8) {
+        edges { node { title handle priceRange { minVariantPrice { amount currencyCode } } images(first:1){ edges { node { url } } } } }
+      }
+    }`);
     products = d.products.edges.map(function (e) { return e.node; });
+    artists = d.collections.edges.map(function (e) { return e.node; });
   } catch (e) {}
 
   const crown = products[0];
@@ -35,11 +40,11 @@ export default async function Home() {
           <div className="slabel">Real Fine Artists</div>
           <div className="stitle">The hands behind the work.</div>
           <div className="artistrow">
-            {ARTISTS.map(function (a) {
+            {artists.map(function (a) {
               return (
-                <div className="ai" key={a.n}>
-                  <div className="av">{a.i}</div>
-                  <div className="nm">{a.n}</div>
+                <div className="ai" key={a.handle}>
+                  <div className="av">{initials(a.title)}</div>
+                  <div className="nm">{a.title}</div>
                 </div>
               );
             })}
