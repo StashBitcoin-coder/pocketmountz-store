@@ -16,7 +16,7 @@ async function fetchAllProducts(collectionHandle) {
           pageInfo { hasNextPage endCursor }
           edges {
             node {
-              title handle description tags availableForSale
+              title handle description tags availableForSale createdAt
               priceRange { minVariantPrice { amount currencyCode } }
               images(first: 1) { edges { node { url } } }
             }

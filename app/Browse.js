@@ -48,13 +48,11 @@ export default function Browse({ collections }) {
       if (sale === 'auction') shown = shown.filter(function (p) { return p.tags.includes('sale:auction'); });
       if (sale === 'buy-now') shown = shown.filter(function (p) { return !p.tags.includes('sale:auction'); });
     }
-    // sort by inscription number from description (newest minted first)
+    // sort by Shopify createdAt descending — products imported in inscription order
     shown.sort(function (a, b) {
-      var ma = a.description && a.description.match(/inscription #(\d+)/i);
-      var mb = b.description && b.description.match(/inscription #(\d+)/i);
-      var na = ma ? parseInt(ma[1]) : 0;
-      var nb = mb ? parseInt(mb[1]) : 0;
-      return nb - na;
+      var da = a.createdAt ? new Date(a.createdAt) : new Date(0);
+      var db = b.createdAt ? new Date(b.createdAt) : new Date(0);
+      return db - da;
     });
   }
 
