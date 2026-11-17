@@ -48,12 +48,6 @@ export default function Browse({ collections }) {
       if (sale === 'auction') shown = shown.filter(function (p) { return p.tags.includes('sale:auction'); });
       if (sale === 'buy-now') shown = shown.filter(function (p) { return !p.tags.includes('sale:auction'); });
     }
-    // sort by Shopify createdAt descending — products imported in inscription order
-    shown.sort(function (a, b) {
-      var da = a.createdAt ? new Date(a.createdAt) : new Date(0);
-      var db = b.createdAt ? new Date(b.createdAt) : new Date(0);
-      return db - da;
-    });
   }
 
   function handleStatus(val) {
