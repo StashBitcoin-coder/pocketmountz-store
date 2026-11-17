@@ -101,10 +101,12 @@ export default function AboutContent({ artists }) {
             {open === 'ordinals' && (
               <>
                 <div className="about-detail-label">The Inscription</div>
-                <div className="about-detail-title">Provenance no hologram can match.</div>
+                <div className="about-detail-title">Provenance no one can forge.</div>
                 <div className="about-detail-body">
-                  <p>A Bitcoin inscription proves what happened, when, and between whom. That&rsquo;s it. That&rsquo;s all it should do. The <em>Proof of Receipt</em> white paper makes the case for pairing a physical object with an inscription as its permanent provenance record &mdash; not replacing the art, just witnessing it. Calling a receipt the art was always the problem. Turns out, a JPEG of a receipt isn&rsquo;t worth much either.</p>
-                  <p>At PocketMountz, we call these <strong>Origin Keys</strong> &mdash; Ordinal Inscriptions with a SeedPod encapsulated inside the PocketMountz physical piece. The object carries the art. The inscription carries the proof. Neither replaces the other.</p>
+                  <p>An NFT or Ordinal proves what happened, when, and between whom. That&rsquo;s all it was ever built to do. The mania sold millions of people the receipt and called it art. When the hype died, they found out what a receipt with nothing behind it is worth.</p>
+                  <p>We did it the other way around.</p>
+                  <p>Origin Keys are Ordinal inscriptions paired with a SeedPod sealed inside a physical PocketMountz piece. The object carries the art. The inscription carries the proof. Neither pretends to be the other.</p>
+                  <p>We inscribe receipts too. Ours come with something you can hold.</p>
                   <div className="about-ord-callout">
                     <div className="about-ord-dia">&#9670;</div>
                     <p>Where a hologram asks you to trust a sticker, an Origin Key asks you to trust math. Inscribed once. Verifiable forever.{' '}
