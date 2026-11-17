@@ -17,7 +17,7 @@ export default async function Collection() {
             descriptionHtml
             image { url }
             metafield(namespace: "custom", key: "sort_order") { value }
-            products(first: 50) {
+            products(first: 200) {
               edges {
                 node {
                   title
