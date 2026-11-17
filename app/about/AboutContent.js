@@ -85,6 +85,10 @@ export default function AboutContent({ artists }) {
                     {artists.map(function (a) {
                       return (
                         <Link className="about-acard" href={'/collection?artist=' + a.handle} key={a.handle}>
+                          {a.image
+                            ? <img className="about-av-img" src={a.image.url} alt={a.title} />
+                            : <div className="about-av">{initials(a.title)}</div>
+                          }
                           <div className="about-aname">{a.title}</div>
                         </Link>
                       );
