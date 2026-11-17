@@ -32,7 +32,10 @@ export default function AboutContent({ artists }) {
       <p className="eyebrow">Who We Are</p>
       <h1 className="about-h1">Integrity.<br />Witnessed.</h1>
       <p className="about-lead">PocketMountz publishes officially licensed Stephen Curry fine art collectibles — museum-quality pieces made by real artists, built to last, with provenance you can verify.</p>
-      <p className="about-manifesto">Cavemen wrote on walls in hopes that the future homes to come would somehow find their messages and decode. In 2026 we&rsquo;ve been given the Blockchain to inscribe our truths and pass on real art that was made by real humans in a world full of AI and robots. We believe here at PocketMountz that humans deserve a place in history at all times and we are here to assure such.</p>
+      <blockquote className="about-manifesto">
+        <p>&ldquo;Cavemen wrote on walls in hopes that the future homes to come would somehow find their messages and decode. In 2026 we&rsquo;ve been given the Blockchain to inscribe our truths and pass on real art that was made by real humans in a world full of AI and robots. We believe here at PocketMountz that humans deserve a place in history at all times and we are here to assure such.&rdquo;</p>
+        <cite className="about-manifesto-cite">— William Wade III</cite>
+      </blockquote>
 
       <div className="about-pills">
         {PILLS.map(function (p) {
