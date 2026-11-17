@@ -1,5 +1,6 @@
 'use client';
 import { useState, useEffect, useRef } from 'react';
+import Link from 'next/link';
 
 const PILLS = [
   { id: 'work',     title: 'The Work',        sub: 'Built by hand. Finished to last.' },
@@ -83,14 +84,14 @@ export default function AboutContent({ artists }) {
                   <div className="about-artists-grid">
                     {artists.map(function (a) {
                       return (
-                        <a className="about-acard" href={'/collection?artist=' + a.handle} key={a.handle}>
+                        <Link className="about-acard" href={'/collection?artist=' + a.handle} key={a.handle}>
                           {a.image
                             ? <img className="about-av-img" src={a.image.url} alt={a.title} />
                             : <div className="about-av">{initials(a.title)}</div>
                           }
                           <div className="about-aname">{a.title}</div>
                           {a.description && <div className="about-abio">{a.description}</div>}
-                        </a>
+                        </Link>
                       );
                     })}
                   </div>
