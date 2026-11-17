@@ -15,6 +15,10 @@ export default function Header() {
           <ThemeToggle />
         </nav>
       </div>
+      <div className="hnav-sub">
+        <a href="/">Drops</a>
+        <a href="/">Auctions</a>
+      </div>
     </header>
   );
 }
