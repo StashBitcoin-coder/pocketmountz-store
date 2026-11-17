@@ -48,6 +48,14 @@ export default function Browse({ collections }) {
       if (sale === 'auction') shown = shown.filter(function (p) { return p.tags.includes('sale:auction'); });
       if (sale === 'buy-now') shown = shown.filter(function (p) { return !p.tags.includes('sale:auction'); });
     }
+    // sort by inscription number (date minted) — products without one go last
+    shown.sort(function (a, b) {
+      var ma = a.description && a.description.match(/#(\d+)/);
+      var mb = b.description && b.description.match(/#(\d+)/);
+      var na = ma ? parseInt(ma[1]) : Infinity;
+      var nb = mb ? parseInt(mb[1]) : Infinity;
+      return na - nb;
+    });
   }
 
   function handleStatus(val) {
