@@ -9,7 +9,7 @@ export default function Header() {
           <a href="/collection">Collection</a>
           <a href="/">Drops</a>
           <a href="/">Auctions</a>
-          <a href="/">About</a>
+          <a href="/about">About</a>
           <ThemeToggle />
         </nav>
       </div>
