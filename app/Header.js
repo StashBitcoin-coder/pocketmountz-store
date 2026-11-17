@@ -1,4 +1,5 @@
 import ThemeToggle from './ThemeToggle';
+import CartIcon from './CartIcon';
 
 export default function Header() {
   return (
@@ -10,6 +11,7 @@ export default function Header() {
           <a href="/">Drops</a>
           <a href="/">Auctions</a>
           <a href="/about">About</a>
+          <CartIcon />
           <ThemeToggle />
         </nav>
       </div>

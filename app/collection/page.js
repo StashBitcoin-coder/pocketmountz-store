@@ -19,6 +19,7 @@ async function fetchAllProducts(collectionHandle) {
               title handle description tags availableForSale createdAt
               priceRange { minVariantPrice { amount currencyCode } }
               images(first: 1) { edges { node { url } } }
+              variants(first: 1) { edges { node { id } } }
             }
           }
         }

@@ -1,5 +1,6 @@
 'use client';
 import { useState, useEffect } from 'react';
+import { useCart } from './CartContext';
 
 function money(p) {
   if (!p) return '';
@@ -11,6 +12,7 @@ function initials(name) {
 }
 
 export default function Browse({ collections }) {
+  var { addToCart, loading: cartLoading } = useCart();
   const [artist, setArtist] = useState(null);
 
   useEffect(function () {
@@ -200,14 +202,18 @@ export default function Browse({ collections }) {
                 </div>
               )}
               {modal.availableForSale && (
-                <a
-                  className="btn gold modal-btn"
-                  href={'https://qwgc1w-vx.myshopify.com/products/' + modal.handle}
-                  target="_blank"
-                  rel="noopener noreferrer"
-                >
-                  {modal.tags.includes('sale:auction') ? 'View Auction' : 'Buy Now'}
-                </a>
+                modal.tags.includes('sale:auction')
+                  ? <a className="btn gold modal-btn" href={'https://qwgc1w-vx.myshopify.com/products/' + modal.handle} target="_blank" rel="noopener noreferrer">View Auction</a>
+                  : <button
+                      className="btn gold modal-btn"
+                      disabled={cartLoading}
+                      onClick={function () {
+                        var variantId = modal.variants && modal.variants.edges[0] ? modal.variants.edges[0].node.id : null;
+                        if (variantId) { addToCart(variantId); setModal(null); }
+                      }}
+                    >
+                      {cartLoading ? 'Adding…' : 'Add to Cart'}
+                    </button>
               )}
             </div>
           </div>

@@ -1,4 +1,6 @@
 import './globals.css';
+import { CartProvider } from './CartContext';
+import CartDrawer from './CartDrawer';
 
 export const metadata = {
   title: 'PocketMountz',
@@ -10,7 +12,10 @@ export default function RootLayout({ children }) {
     <html lang="en">
       <body>
         <script dangerouslySetInnerHTML={{ __html: `try{if(localStorage.getItem('theme')==='light'){document.body.classList.add('lightmode');}}catch(e){}` }} />
-        {children}
+        <CartProvider>
+          {children}
+          <CartDrawer />
+        </CartProvider>
       </body>
     </html>
   );
