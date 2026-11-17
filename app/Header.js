@@ -8,8 +8,8 @@ export default function Header() {
         <a className="logo" href="/"><img src="/logo.png" alt="PocketMountz" /></a>
         <nav className="hnav">
           <a href="/collection">Collection</a>
-          <a href="/">Drops</a>
-          <a href="/">Auctions</a>
+          <a href="/" className="hide-sm">Drops</a>
+          <a href="/" className="hide-sm">Auctions</a>
           <a href="/about">About</a>
           <CartIcon />
           <ThemeToggle />
