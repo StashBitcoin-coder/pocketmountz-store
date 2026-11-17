@@ -48,10 +48,10 @@ export default function Browse({ collections }) {
       if (sale === 'auction') shown = shown.filter(function (p) { return p.tags.includes('sale:auction'); });
       if (sale === 'buy-now') shown = shown.filter(function (p) { return !p.tags.includes('sale:auction'); });
     }
-    // sort by inscription number (date minted) — products without one go last
+    // sort by handle number (rwa-001 → 1) which was assigned in inscription order
     shown.sort(function (a, b) {
-      var ma = a.description && a.description.match(/#(\d+)/);
-      var mb = b.description && b.description.match(/#(\d+)/);
+      var ma = a.handle.match(/(\d+)$/);
+      var mb = b.handle.match(/(\d+)$/);
       var na = ma ? parseInt(ma[1]) : Infinity;
       var nb = mb ? parseInt(mb[1]) : Infinity;
       return na - nb;
