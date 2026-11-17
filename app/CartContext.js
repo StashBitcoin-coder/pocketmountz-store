@@ -1,5 +1,5 @@
 'use client';
-import { createContext, useContext, useState, useCallback } from 'react';
+import { createContext, useContext, useState, useCallback, useEffect } from 'react';
 
 const CartContext = createContext(null);
 
@@ -36,10 +36,35 @@ var CART_FIELDS = `
   }
 `;
 
+async function fetchCart(cartId) {
+  var d = await sfetch(
+    'query cartGet($id:ID!){cart(id:$id){' + CART_FIELDS + '}}',
+    { id: cartId }
+  );
+  return d.cart;
+}
+
 export function CartProvider({ children }) {
   var [cart, setCart] = useState(null);
   var [drawerOpen, setDrawerOpen] = useState(false);
   var [loading, setLoading] = useState(false);
+
+  useEffect(function () {
+    try {
+      var savedId = localStorage.getItem('pm_cart_id');
+      if (savedId) {
+        fetchCart(savedId).then(function (c) {
+          if (c && c.lines.edges.length > 0) setCart(c);
+          else localStorage.removeItem('pm_cart_id');
+        }).catch(function () { localStorage.removeItem('pm_cart_id'); });
+      }
+    } catch (e) {}
+  }, []);
+
+  function saveCart(c) {
+    setCart(c);
+    try { localStorage.setItem('pm_cart_id', c.id); } catch (e) {}
+  }
 
   var addToCart = useCallback(async function (variantId) {
     setLoading(true);
@@ -50,13 +75,13 @@ export function CartProvider({ children }) {
           'mutation cartCreate($lines:[CartLineInput!]!){cartCreate(input:{lines:$lines}){cart{' + CART_FIELDS + '}}}',
           { lines: [{ merchandiseId: variantId, quantity: 1 }] }
         );
-        setCart(d.cartCreate.cart);
+        saveCart(d.cartCreate.cart);
       } else {
         d = await sfetch(
           'mutation cartLinesAdd($cartId:ID!,$lines:[CartLineInput!]!){cartLinesAdd(cartId:$cartId,lines:$lines){cart{' + CART_FIELDS + '}}}',
           { cartId: cart.id, lines: [{ merchandiseId: variantId, quantity: 1 }] }
         );
-        setCart(d.cartLinesAdd.cart);
+        saveCart(d.cartLinesAdd.cart);
       }
     } catch (e) {
       console.error('Cart error', e);
@@ -72,7 +97,13 @@ export function CartProvider({ children }) {
       'mutation cartLinesRemove($cartId:ID!,$lineIds:[ID!]!){cartLinesRemove(cartId:$cartId,lineIds:$lineIds){cart{' + CART_FIELDS + '}}}',
       { cartId: cart.id, lineIds: [lineId] }
     );
-    setCart(d.cartLinesRemove.cart);
+    var updated = d.cartLinesRemove.cart;
+    if (updated.lines.edges.length === 0) {
+      setCart(null);
+      try { localStorage.removeItem('pm_cart_id'); } catch (e) {}
+    } else {
+      saveCart(updated);
+    }
   }, [cart]);
 
   var lines = cart ? cart.lines.edges.map(function (e) { return e.node; }) : [];
