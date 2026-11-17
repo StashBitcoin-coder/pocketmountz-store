@@ -110,6 +110,7 @@ export default function AboutContent({ artists }) {
                     <p>Where a hologram asks you to trust a sticker, an Origin Key asks you to trust math. Inscribed once. Verifiable forever.{' '}
                       <a href="https://genesis.immutableeditions.com/news/proof-of-receipt/Proof-of-Receipt-White-Paper.pdf" target="_blank" rel="noopener noreferrer" className="about-ord-link">Read the Proof of Receipt white paper &rarr;</a>
                     </p>
+                  </div>
                   <blockquote className="about-manifesto">
                     <p>&ldquo;Cavemen wrote on walls in hopes that the future humans to come would somehow find their messages and decode. In 2026 we&rsquo;ve been given the Blockchain to inscribe our truths and pass on real art that was made by real humans in a world full of AI and robots. We believe here at PocketMountz that humans deserve a place in history at all times and we are here to assure such.&rdquo;</p>
                     <cite className="about-manifesto-cite">— William Wade III</cite>
@@ -117,6 +118,7 @@ export default function AboutContent({ artists }) {
                 </div>
               </>
             )}
+
 
           </div>
         </div>
