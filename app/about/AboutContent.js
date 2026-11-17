@@ -90,7 +90,10 @@ export default function AboutContent({ artists }) {
                             : <div className="about-av">{initials(a.title)}</div>
                           }
                           <div className="about-aname">{a.title}</div>
-                          {a.description && <div className="about-abio">{a.description}</div>}
+                          {a.descriptionHtml
+                            ? <div className="about-abio" dangerouslySetInnerHTML={{ __html: a.descriptionHtml }} />
+                            : a.description && <div className="about-abio">{a.description}</div>
+                          }
                         </Link>
                       );
                     })}

@@ -106,7 +106,10 @@ export default function Browse({ collections }) {
             {col.image && <img className="artist-header-img" src={col.image.url} alt={col.title} />}
             <div className="artist-header-text">
               <div className="artist-header-name">{col.title}</div>
-              {col.description && <p className="artist-bio">{col.description}</p>}
+              {col.descriptionHtml
+                ? <div className="artist-bio" dangerouslySetInnerHTML={{ __html: col.descriptionHtml }} />
+                : col.description && <p className="artist-bio">{col.description}</p>
+              }
             </div>
           </div>
         );

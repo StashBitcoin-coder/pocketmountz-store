@@ -121,6 +121,8 @@ footer .fsub{font-size:13px;color:var(--text2);margin-bottom:26px;}
 .about-acard{text-decoration:none;color:inherit;cursor:pointer;}
 .about-aname{font-family:var(--display);font-weight:700;font-size:14px;color:var(--white);}
 .about-abio{font-size:12px;color:var(--text2);line-height:1.6;}
+.about-abio a,.artist-bio a{color:var(--gold);text-decoration:none;border-bottom:1px solid var(--gold2);}
+.about-abio a:hover,.artist-bio a:hover{border-bottom-color:var(--gold);}
 @media(max-width:560px){.about-pills{gap:8px;}.about-pill{padding:9px 16px;}.about-detail-inner{padding:22px 18px 26px;}.about-artists-grid{grid-template-columns:1fr 1fr;}}
 
 .ai .av{transition:transform .15s ease;}

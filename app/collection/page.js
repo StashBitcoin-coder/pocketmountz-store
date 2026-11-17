@@ -14,6 +14,7 @@ export default async function Collection() {
             title
             handle
             description
+            descriptionHtml
             image { url }
             metafield(namespace: "custom", key: "sort_order") { value }
             products(first: 50) {

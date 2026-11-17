@@ -9,7 +9,7 @@ export default async function About() {
   try {
     const d = await shopify(`{
       collections(first: 20) {
-        edges { node { title handle description image { url } metafield(namespace:"custom",key:"sort_order"){ value } } }
+        edges { node { title handle description descriptionHtml image { url } metafield(namespace:"custom",key:"sort_order"){ value } } }
       }
     }`);
     artists = d.collections.edges.map(function (e) { return e.node; });
