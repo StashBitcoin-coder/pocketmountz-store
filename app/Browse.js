@@ -48,13 +48,15 @@ export default function Browse({ collections }) {
       if (sale === 'auction') shown = shown.filter(function (p) { return p.tags.includes('sale:auction'); });
       if (sale === 'buy-now') shown = shown.filter(function (p) { return !p.tags.includes('sale:auction'); });
     }
-    // sort by handle number (rwa-001 → 1) which was assigned in inscription order
+    // sort by RWA sequence number — try title first, fall back to handle
     shown.sort(function (a, b) {
-      var ma = a.handle.match(/(\d+)$/);
-      var mb = b.handle.match(/(\d+)$/);
-      var na = ma ? parseInt(ma[1]) : Infinity;
-      var nb = mb ? parseInt(mb[1]) : Infinity;
-      return na - nb;
+      var ma = a.title.match(/(\d+)/);
+      var mb = b.title.match(/(\d+)/);
+      var na = ma ? parseInt(ma[1]) : null;
+      var nb = mb ? parseInt(mb[1]) : null;
+      if (na === null) { var ha = a.handle.match(/(\d+)$/); na = ha ? parseInt(ha[1]) : Infinity; }
+      if (nb === null) { var hb = b.handle.match(/(\d+)$/); nb = hb ? parseInt(hb[1]) : Infinity; }
+      return nb - na;
     });
   }
 
