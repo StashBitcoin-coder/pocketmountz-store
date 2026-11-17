@@ -157,7 +157,7 @@ button.pcard{cursor:pointer;text-align:left;width:100%;font:inherit;padding:0;}
 .pcard .pimg{position:relative;}
 .sold-badge{position:absolute;inset:0;background:rgba(0,0,0,.58);display:flex;align-items:center;justify-content:center;font-family:var(--display);font-weight:800;font-size:1rem;letter-spacing:.2em;color:#fff;}
 .btag-sold{background:var(--rule);color:var(--text2);}
-.clear-btn{background:none;border:none;font-family:var(--display);font-size:11px;letter-spacing:.08em;text-transform:uppercase;color:var(--text2);cursor:pointer;padding:9px 4px;}
+.clear-btn{background:none;border:none;font-family:var(--display);font-size:14px;letter-spacing:.08em;text-transform:uppercase;color:var(--text2);cursor:pointer;padding:9px 4px;}
 .clear-btn:hover{color:var(--gold);}
 .sel-disabled select{opacity:.4;cursor:not-allowed;}
 .modal-sold-banner{position:absolute;inset:0;background:rgba(0,0,0,.45);display:flex;align-items:center;justify-content:center;font-family:var(--display);font-weight:800;font-size:1.4rem;letter-spacing:.2em;color:#fff;}
