@@ -109,13 +109,23 @@ export function CartProvider({ children }) {
   var lines = cart ? cart.lines.edges.map(function (e) { return e.node; }) : [];
   var itemCount = lines.reduce(function (sum, l) { return sum + l.quantity; }, 0);
 
+  // Force checkout URL to use the myshopify.com domain regardless of custom domain setting
+  function safeCheckoutUrl(url) {
+    if (!url) return null;
+    try {
+      var u = new URL(url);
+      u.hostname = DOMAIN;
+      return u.toString();
+    } catch (e) { return url; }
+  }
+
   return (
     <CartContext.Provider value={{
       addToCart: addToCart,
       removeFromCart: removeFromCart,
       lines: lines,
       itemCount: itemCount,
-      checkoutUrl: cart ? cart.checkoutUrl : null,
+      checkoutUrl: safeCheckoutUrl(cart ? cart.checkoutUrl : null),
       drawerOpen: drawerOpen,
       setDrawerOpen: setDrawerOpen,
       loading: loading,
