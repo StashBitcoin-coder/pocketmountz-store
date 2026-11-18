@@ -1,8 +1,10 @@
-import { query } from '../../../lib/db';
+import { getDb } from '../../../lib/db';
 
 export async function GET() {
   try {
-    await query(`
+    const sql = getDb();
+
+    await sql`
       CREATE TABLE IF NOT EXISTS auctions (
         id SERIAL PRIMARY KEY,
         product_handle TEXT NOT NULL UNIQUE,
@@ -20,9 +22,9 @@ export async function GET() {
         status TEXT NOT NULL DEFAULT 'active',
         created_at TIMESTAMPTZ NOT NULL DEFAULT NOW()
       )
-    `);
+    `;
 
-    await query(`
+    await sql`
       CREATE TABLE IF NOT EXISTS bids (
         id SERIAL PRIMARY KEY,
         auction_id INTEGER NOT NULL REFERENCES auctions(id),
@@ -34,9 +36,9 @@ export async function GET() {
         verified BOOLEAN NOT NULL DEFAULT false,
         created_at TIMESTAMPTZ NOT NULL DEFAULT NOW()
       )
-    `);
+    `;
 
-    await query(`
+    await sql`
       CREATE TABLE IF NOT EXISTS email_verifications (
         id SERIAL PRIMARY KEY,
         email TEXT NOT NULL,
@@ -45,7 +47,7 @@ export async function GET() {
         used BOOLEAN NOT NULL DEFAULT false,
         created_at TIMESTAMPTZ NOT NULL DEFAULT NOW()
       )
-    `);
+    `;
 
     return Response.json({ success: true, message: 'Tables created.' });
   } catch (e) {
