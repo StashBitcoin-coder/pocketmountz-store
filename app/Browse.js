@@ -74,13 +74,6 @@ export default function Browse({ collections }) {
         <div className="browse-arow-wrap">
           <div className="arowlabel">Artists</div>
           <div className="browse-arow">
-        <button
-          className={'browse-ai' + (artist === 'all' ? ' active' : '')}
-          onClick={function () { setArtist('all'); }}
-        >
-          <span className="bav allav">◆</span>
-          <span className="blbl">All</span>
-        </button>
         {collections.map(function (c) {
           return (
             <button
@@ -96,6 +89,13 @@ export default function Browse({ collections }) {
             </button>
           );
         })}
+        <button
+          className={'browse-ai' + (artist === 'all' ? ' active' : '')}
+          onClick={function () { setArtist('all'); }}
+        >
+          <span className="bav allav">◆</span>
+          <span className="blbl">All</span>
+        </button>
           </div>
         </div>
       </div>
