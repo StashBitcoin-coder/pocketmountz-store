@@ -16,7 +16,7 @@ function Countdown({ endsAt, onEnd }) {
       var m = Math.floor((diff % 3600000) / 60000);
       var s = Math.floor((diff % 60000) / 1000);
       setUrgent(diff < 600000);
-      if (d > 0) setTime(d + 'd ' + h + 'h ' + m + 'm');
+      if (d > 0) setTime(d + 'd ' + h + 'h ' + m + 'm ' + s + 's');
       else if (h > 0) setTime(h + 'h ' + m + 'm ' + s + 's');
       else setTime(m + 'm ' + s + 's');
     }
@@ -108,7 +108,9 @@ export default function AuctionClient({ auction: initial }) {
       <div className="auction-grid">
         <div className="auction-img-col">
           {auction.image_url
-            ? <img className="auction-img" src={auction.image_url} alt={auction.product_title} />
+            ? /\.(mp4|mov|webm)(\?|$)/i.test(auction.image_url)
+              ? <video className="auction-img" src={auction.image_url} autoPlay loop muted playsInline />
+              : <img className="auction-img" src={auction.image_url} alt={auction.product_title} />
             : <div className="auction-img-ph">PM</div>}
         </div>
 
