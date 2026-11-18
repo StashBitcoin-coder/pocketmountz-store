@@ -118,6 +118,10 @@ export default function AuctionClient({ auction: initial }) {
           <p className="eyebrow">Live Auction</p>
           <h1 className="auction-title">{auction.product_title}</h1>
 
+          {auction.reserve_price && Number(auction.current_bid) < Number(auction.reserve_price) && (
+            <p className="auction-reserve-notice">Reserve not yet met</p>
+          )}
+
           <div className="auction-stats">
             <div className="auction-stat">
               <div className="auction-stat-label">Current Bid</div>
