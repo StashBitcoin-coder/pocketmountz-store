@@ -141,7 +141,8 @@ footer .fsub{font-size:13px;color:var(--text2);margin-bottom:26px;}
 .browse-ai .blbl{font-size:10.5px;color:var(--text2);text-align:center;line-height:1.2;}
 .browse-ai.active .blbl{color:var(--gold);}
 .browse-ai .bav.allav{background:#15120a;}
-.controls{display:flex;gap:8px;flex-wrap:wrap;align-items:center;margin-bottom:14px;}
+.controls{display:flex;gap:6px;flex-wrap:wrap;align-items:center;margin-bottom:14px;}
+@media(max-width:600px){.controls{flex-wrap:nowrap;}.sel select{font-size:11px;padding:8px 20px 8px 8px;}.clear-btn{font-size:11px;white-space:nowrap;}}
 .sel{position:relative;}
 .sel::after{content:"\25BE";position:absolute;right:11px;top:50%;transform:translateY(-50%);color:var(--gold);font-size:11px;pointer-events:none;}
 .sel select{appearance:none;-webkit-appearance:none;font-family:var(--body);font-size:12.5px;font-weight:500;color:var(--text);background:var(--panel2);border:1px solid var(--rule);border-radius:8px;padding:9px 30px 9px 13px;cursor:pointer;outline:none;}
