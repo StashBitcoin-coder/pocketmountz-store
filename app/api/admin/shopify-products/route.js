@@ -7,14 +7,18 @@ export async function POST(req) {
     const { secret, query } = await req.json();
     if (!SECRET || secret !== SECRET) return Response.json({ error: 'Unauthorized' }, { status: 401 });
 
+    const qFilter = query
+      ? `available_for_sale:true title:*${query}*`
+      : `available_for_sale:true`;
+
     const gql = `{
-      products(first: 50${query ? `, query: "title:*${query}*"` : ''}) {
+      products(first: 250, query: "${qFilter}") {
         edges {
           node {
             id
             title
             handle
-            variants(first: 1) { edges { node { id price { amount } } } }
+            variants(first: 1) { edges { node { id availableForSale price { amount } } } }
             media(first: 1) {
               edges {
                 node {
@@ -35,7 +39,11 @@ export async function POST(req) {
       body: JSON.stringify({ query: gql }),
     });
     const data = await res.json();
-    const products = data.data.products.edges.map(function ({ node }) {
+    const products = data.data.products.edges
+      .filter(function ({ node }) {
+        return node.variants.edges[0]?.node.availableForSale;
+      })
+      .map(function ({ node }) {
       var media = node.media.edges[0]?.node;
       var image_url = null;
       if (media) {
