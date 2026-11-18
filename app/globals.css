@@ -257,6 +257,17 @@ button.pcard{cursor:pointer;text-align:left;width:100%;font:inherit;padding:0;}
 .admin-status-active{color:#4caf50;}
 .admin-status-ended{color:var(--text2);}
 @media(max-width:800px){.admin-cols{flex-direction:column;}.admin-form-col{flex:none;width:100%;}}
+.product-picker{border:1px solid var(--rule);border-radius:8px;overflow:hidden;}
+.product-picker-search{width:100%;padding:10px 14px;background:var(--panel);border:none;border-bottom:1px solid var(--rule);color:var(--white);font-size:14px;outline:none;}
+.product-picker-list{max-height:280px;overflow-y:auto;}
+.product-picker-empty{padding:16px;text-align:center;color:var(--text2);font-size:13px;}
+.product-picker-row{display:flex;align-items:center;gap:12px;width:100%;padding:10px 14px;background:none;border:none;border-bottom:1px solid var(--rule);cursor:pointer;text-align:left;}
+.product-picker-row:last-child{border-bottom:none;}
+.product-picker-row:hover{background:var(--panel2);}
+.product-picker-thumb{width:44px;height:44px;object-fit:cover;border-radius:6px;flex-shrink:0;background:#111;}
+.product-picker-ph{display:flex;align-items:center;justify-content:center;font-family:var(--display);font-size:14px;color:var(--gold);}
+.product-picker-name{font-size:13px;color:var(--white);line-height:1.3;}
+.product-picker-handle{font-size:11px;color:var(--text2);margin-top:2px;}
 
 /* ── Auction Page ───────────────────────────────────────── */
 .auction-wrap{max-width:1060px;margin:0 auto;padding:40px 16px 80px;}

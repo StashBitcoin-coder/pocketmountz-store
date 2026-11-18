@@ -1,5 +1,5 @@
 'use client';
-import { useState } from 'react';
+import { useState, useCallback } from 'react';
 
 function fmt(dt) {
   if (!dt) return '';
@@ -17,6 +17,36 @@ export default function AuctionAdminClient() {
   var [msg, setMsg] = useState('');
   var [loading, setLoading] = useState(false);
   var [editing, setEditing] = useState(null);
+  var [products, setProducts] = useState([]);
+  var [productSearch, setProductSearch] = useState('');
+  var [productLoading, setProductLoading] = useState(false);
+  var [pickerOpen, setPickerOpen] = useState(false);
+
+  var fetchProducts = useCallback(async function (q) {
+    setProductLoading(true);
+    var res = await fetch('/api/admin/shopify-products', {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify({ secret, query: q || '' }),
+    });
+    var data = await res.json();
+    setProductLoading(false);
+    if (data.products) setProducts(data.products);
+  }, [secret]);
+
+  function pickProduct(p) {
+    setForm(function (f) {
+      return Object.assign({}, f, {
+        product_handle: p.handle,
+        product_title: p.title,
+        variant_id: p.variant_id || '',
+        image_url: p.image_url || '',
+        starting_bid: f.starting_bid,
+      });
+    });
+    setPickerOpen(false);
+    setProductSearch('');
+  }
 
   async function login() {
     setMsg('');
@@ -113,6 +143,37 @@ export default function AuctionAdminClient() {
           <h2 className="admin-heading">{editing ? 'Edit Auction' : 'New Auction'}</h2>
           {editing && <p className="admin-editing-note">Editing: <strong>{editing}</strong> <button className="auction-back" onClick={function () { setEditing(null); setForm({ product_handle: '', product_title: '', variant_id: '', image_url: '', starting_bid: '', reserve_price: '', starts_at: '', ends_at: '' }); }}>Cancel</button></p>}
           <form onSubmit={submit} className="auction-form">
+            {!editing && (
+              <div className="auction-field">
+                <label>Select from Shopify</label>
+                {!pickerOpen
+                  ? <button type="button" className="admin-btn" style={{width:'100%',padding:'10px',fontSize:13}} onClick={function () { setPickerOpen(true); fetchProducts(''); }}>Browse Products →</button>
+                  : (
+                    <div className="product-picker">
+                      <input autoFocus value={productSearch} onChange={function (e) { setProductSearch(e.target.value); fetchProducts(e.target.value); }} placeholder="Search by name…" className="product-picker-search" />
+                      <div className="product-picker-list">
+                        {productLoading && <div className="product-picker-empty">Loading…</div>}
+                        {!productLoading && products.length === 0 && <div className="product-picker-empty">No products found.</div>}
+                        {products.map(function (p) {
+                          return (
+                            <button type="button" key={p.id} className="product-picker-row" onClick={function () { pickProduct(p); }}>
+                              {p.image_url && (p.image_url.includes('.mp4') || p.image_url.includes('/videos/'))
+                                ? <video src={p.image_url} className="product-picker-thumb" muted />
+                                : p.image_url ? <img src={p.image_url} className="product-picker-thumb" alt="" />
+                                : <div className="product-picker-thumb product-picker-ph">PM</div>}
+                              <div className="product-picker-info">
+                                <div className="product-picker-name">{p.title}</div>
+                                <div className="product-picker-handle">{p.handle} · ${p.price}</div>
+                              </div>
+                            </button>
+                          );
+                        })}
+                      </div>
+                      <button type="button" className="auction-back" onClick={function () { setPickerOpen(false); }}>← Cancel</button>
+                    </div>
+                  )}
+              </div>
+            )}
             <div className="auction-field">
               <label>Product Handle</label>
               <input value={form.product_handle} onChange={function (e) { set('product_handle', e.target.value); }} placeholder="1952-topps-mantle" disabled={!!editing} />
