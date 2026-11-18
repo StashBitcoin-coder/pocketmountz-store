@@ -219,6 +219,7 @@ button.pcard{cursor:pointer;text-align:left;width:100%;font:inherit;padding:0;}
 .auction-grid{display:flex;gap:48px;align-items:flex-start;}
 .auction-img-col{flex:0 0 46%;position:sticky;top:80px;}
 .auction-img{width:100%;border-radius:12px;display:block;background:#111;}
+.auction-video{width:100%;aspect-ratio:9/16;object-fit:cover;}
 .auction-img-ph{width:100%;aspect-ratio:1;border-radius:12px;background:#1a1a1a;display:flex;align-items:center;justify-content:center;font-family:var(--display);font-size:48px;font-weight:700;color:var(--gold);letter-spacing:.1em;}
 .auction-info-col{flex:1;min-width:0;}
 .auction-title{font-family:var(--display);font-size:28px;font-weight:700;color:var(--white);line-height:1.2;margin-bottom:4px;}
