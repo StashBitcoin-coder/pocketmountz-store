@@ -89,7 +89,7 @@ export default function AuctionAdminClient() {
     });
     var data = await res.json();
     setLoading(false);
-    if (data.error) { setMsg('Error: ' + data.error); return; }
+    if (data.error) { setMsg('Error: ' + data.error); window.scrollTo(0,0); return; }
     setMsg(editing ? 'Updated!' : 'Auction created!');
     setForm({ product_handle: '', product_title: '', variant_id: '', image_url: '', starting_bid: '', reserve_price: '', starts_at: '', ends_at: '' });
     setEditing(null);
@@ -103,6 +103,18 @@ export default function AuctionAdminClient() {
       headers: { 'Content-Type': 'application/json' },
       body: JSON.stringify({ secret, product_handle: handle, status: 'ended' }),
     });
+    reload();
+  }
+
+  async function deleteAuction(handle) {
+    if (!confirm('Permanently delete this auction and all its bids? This cannot be undone.')) return;
+    var res = await fetch('/api/admin/delete-auction', {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify({ secret, product_handle: handle }),
+    });
+    var data = await res.json();
+    if (data.error) { alert(data.error); return; }
     reload();
   }
 
@@ -142,6 +154,7 @@ export default function AuctionAdminClient() {
         <div className="admin-form-col">
           <h2 className="admin-heading">{editing ? 'Edit Auction' : 'New Auction'}</h2>
           {editing && <p className="admin-editing-note">Editing: <strong>{editing}</strong> <button className="auction-back" onClick={function () { setEditing(null); setForm({ product_handle: '', product_title: '', variant_id: '', image_url: '', starting_bid: '', reserve_price: '', starts_at: '', ends_at: '' }); }}>Cancel</button></p>}
+          {msg && <p className={msg.startsWith('Error') ? 'auction-error' : 'admin-success'} style={{marginBottom:16}}>{msg}</p>}
           <form onSubmit={submit} className="auction-form">
             {!editing && (
               <div className="auction-field">
@@ -210,7 +223,6 @@ export default function AuctionAdminClient() {
                 <input type="datetime-local" value={form.ends_at} onChange={function (e) { set('ends_at', e.target.value); }} />
               </div>
             </div>
-            {msg && <p className={msg.startsWith('Error') ? 'auction-error' : 'admin-success'}>{msg}</p>}
             <button className="btn gold auction-submit" type="submit" disabled={loading}>
               {loading ? 'Saving…' : editing ? 'Update Auction' : 'Create Auction'}
             </button>
@@ -230,6 +242,7 @@ export default function AuctionAdminClient() {
                 <div className="admin-auction-actions">
                   <button className="admin-btn" onClick={function () { editAuction(a); }}>Edit</button>
                   {a.status === 'active' && <button className="admin-btn danger" onClick={function () { endAuction(a.product_handle); }}>End</button>}
+                  {a.status !== 'active' && <button className="admin-btn danger" onClick={function () { deleteAuction(a.product_handle); }}>Delete</button>}
                   <a className="admin-btn" href={'/auction/' + a.product_handle} target="_blank" rel="noopener noreferrer">View</a>
                 </div>
               </div>
