@@ -15,6 +15,18 @@ export async function POST(req) {
     }
 
     const sql = getDb();
+
+    // Warn if this variant is already in an active auction (different handle)
+    const existing = await sql`
+      SELECT product_handle, product_title FROM auctions
+      WHERE variant_id = ${variant_id} AND status = 'active' AND product_handle != ${product_handle}
+    `;
+    if (existing.length) {
+      return Response.json({
+        error: `This product is already in an active auction: "${existing[0].product_title}" (${existing[0].product_handle}). End that auction first.`
+      }, { status: 409 });
+    }
+
     const rows = await sql`
       INSERT INTO auctions (product_handle, product_title, variant_id, image_url, starting_bid, reserve_price, starts_at, ends_at, status)
       VALUES (
