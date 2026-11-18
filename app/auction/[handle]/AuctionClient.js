@@ -123,7 +123,7 @@ export default function AuctionClient({ auction: initial }) {
               <div className="auction-stat-label">Current Bid</div>
               <div className="auction-stat-val">{Number(auction.current_bid) > 0 ? money(auction.current_bid) : money(auction.starting_bid)}</div>
             </div>
-            <div className="auction-stat">
+            <div className="auction-stat time-left">
               <div className="auction-stat-label">{ended ? 'Ended' : 'Time Left'}</div>
               <div className="auction-stat-val">
                 {ended
