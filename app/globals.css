@@ -227,6 +227,7 @@ button.pcard{cursor:pointer;text-align:left;width:100%;font:inherit;padding:0;}
 .auction-stat:last-child{border-right:none;}
 .auction-stat-label{font-size:11px;text-transform:uppercase;letter-spacing:.08em;color:var(--text2);margin-bottom:4px;}
 .auction-stat-val{font-family:var(--display);font-size:22px;font-weight:700;color:var(--white);}
+.auction-stat-val .auction-timer{font-size:14px;font-weight:700;}
 .auction-timer{color:var(--gold);}
 .auction-timer.urgent{color:#e05c5c;animation:pulse 1s ease-in-out infinite;}
 @keyframes pulse{0%,100%{opacity:1;}50%{opacity:.6;}}

@@ -108,8 +108,8 @@ export default function AuctionClient({ auction: initial }) {
       <div className="auction-grid">
         <div className="auction-img-col">
           {auction.image_url
-            ? /\.(mp4|mov|webm)(\?|$)/i.test(auction.image_url)
-              ? <video className="auction-img" src={auction.image_url} autoPlay loop muted playsInline />
+            ? (auction.image_url.includes('.mp4') || auction.image_url.includes('.mov') || auction.image_url.includes('.webm') || auction.image_url.includes('/videos/'))
+              ? <video className="auction-img" src={auction.image_url} autoPlay loop muted playsInline style={{objectFit:'cover'}} />
               : <img className="auction-img" src={auction.image_url} alt={auction.product_title} />
             : <div className="auction-img-ph">PM</div>}
         </div>
