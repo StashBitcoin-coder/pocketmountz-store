@@ -21,6 +21,7 @@ export default function AuctionAdminClient() {
   var [productSearch, setProductSearch] = useState('');
   var [productLoading, setProductLoading] = useState(false);
   var [pickerOpen, setPickerOpen] = useState(false);
+  var [multiMode, setMultiMode] = useState(false);
 
   var fetchProducts = useCallback(async function (q) {
     setProductLoading(true);
@@ -58,7 +59,19 @@ export default function AuctionAdminClient() {
     var data = await res.json();
     if (data.error) { setMsg(data.error); return; }
     setAuctions(data.auctions);
+    var s = await fetch('/api/admin/settings').then(function (r) { return r.json(); });
+    setMultiMode(s.settings?.multi_auction_mode === 'true');
     setAuthed(true);
+  }
+
+  async function toggleMultiMode() {
+    var next = !multiMode;
+    setMultiMode(next);
+    await fetch('/api/admin/settings', {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify({ secret, key: 'multi_auction_mode', value: String(next) }),
+    });
   }
 
   async function reload() {
@@ -230,7 +243,16 @@ export default function AuctionAdminClient() {
         </div>
 
         <div className="admin-list-col">
-          <h2 className="admin-heading">All Auctions</h2>
+          <div className="admin-setting-row">
+            <div>
+              <div className="admin-setting-label">Multiple Auction Mode</div>
+              <div className="admin-setting-desc">{multiMode ? 'Showing all active auctions on the page' : 'Showing one auction at a time — others are queued'}</div>
+            </div>
+            <button className={'admin-toggle' + (multiMode ? ' on' : '')} onClick={toggleMultiMode}>
+              <span className="admin-toggle-knob" />
+            </button>
+          </div>
+          <h2 className="admin-heading" style={{marginTop:28}}>All Auctions</h2>
           {auctions.length === 0 && <p style={{color:'var(--text2)',fontSize:13}}>No auctions yet.</p>}
           {auctions.map(function (a) {
             return (

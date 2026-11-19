@@ -33,12 +33,6 @@ export default function AuctionsClient() {
 
   return (
     <div className="auctions-page">
-      {rest.length > 0 && (
-        <div className="auctions-header">
-          <h1 className="auctions-title">Auction</h1>
-          <p className="eyebrow" style={{marginTop:4}}>{auctions.length} active auctions — soonest ending first</p>
-        </div>
-      )}
       <AuctionClient auction={featured} />
       {rest.length > 0 && (
         <div className="auctions-more">
