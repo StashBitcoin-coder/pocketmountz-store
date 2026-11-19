@@ -275,6 +275,8 @@ button.pcard{cursor:pointer;text-align:left;width:100%;font:inherit;padding:0;}
 .drop-form-field input:focus{border-color:var(--gold2);}
 .drop-btn-back{width:100%;background:none;border:1px solid var(--rule);border-radius:9px;padding:9px;color:var(--text2);font-size:12px;cursor:pointer;margin-top:7px;}
 .drop-btn-back:hover{border-color:var(--text2);color:var(--text);}
+.drop-error{background:rgba(224,92,92,.1);border:1px solid rgba(224,92,92,.3);border-radius:7px;padding:9px 12px;font-size:12.5px;color:#e05c5c;margin-bottom:12px;}
+.drop-btn-enter:disabled{opacity:.6;cursor:not-allowed;transform:none;}
 .drop-entered-banner{display:flex;align-items:flex-start;gap:13px;background:rgba(61,186,120,.08);border:1px solid rgba(61,186,120,.2);border-radius:11px;padding:16px;margin-bottom:14px;}
 .drop-entered-icon{font-size:20px;flex:none;color:#3DBA78;}
 .drop-entered-hed{font-family:var(--display);font-weight:700;font-size:14px;color:#3DBA78;margin-bottom:3px;}
