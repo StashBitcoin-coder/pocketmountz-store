@@ -49,6 +49,16 @@ export async function GET() {
       )
     `;
 
+    await sql`
+      CREATE TABLE IF NOT EXISTS drop_entries (
+        id SERIAL PRIMARY KEY,
+        name TEXT NOT NULL,
+        email TEXT NOT NULL,
+        drop_id TEXT NOT NULL DEFAULT 'drop-1',
+        created_at TIMESTAMPTZ NOT NULL DEFAULT NOW()
+      )
+    `;
+
     return Response.json({ success: true, message: 'Tables created.' });
   } catch (e) {
     return Response.json({ error: e.message }, { status: 500 });

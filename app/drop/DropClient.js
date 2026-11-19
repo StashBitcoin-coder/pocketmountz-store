@@ -74,10 +74,18 @@ export default function DropClient({ drop }) {
     setError('');
     setBusy(true);
     try {
-      // Save to localStorage before redirecting so we show entered state on return
+      // Record entry in Neon DB
+      await fetch('/api/drop-enter', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ name: name.trim(), email: email.trim(), drop_id: 'drop-1' }),
+      });
+
+      // Save to localStorage so we show entered state on return
       var info = { name: name.trim(), email: email.trim(), ts: Date.now() };
       try { localStorage.setItem('pm_drop_entry', JSON.stringify(info)); } catch (e) {}
 
+      // Create Shopify cart for $1 entry fee and redirect
       var url = await createEntryCheckout(drop.entryVariantId, email.trim());
       if (!url) throw new Error('No checkout URL returned.');
       window.location.href = url;
