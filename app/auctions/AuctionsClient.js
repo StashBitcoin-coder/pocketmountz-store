@@ -17,12 +17,12 @@ export default function AuctionsClient() {
       .catch(function () { setLoading(false); });
   }, []);
 
-  if (loading) return <div className="auctions-page"><p className="auctions-empty">Loading…</p></div>;
+  if (loading) return <div className="auctions-page"><div className="page-hed"><p className="eyebrow">Live Now</p><h1 className="col-title">Auction</h1></div><p className="auctions-empty">Loading…</p></div>;
 
   if (auctions.length === 0) {
     return (
       <div className="auctions-page">
-        <div className="auctions-header"><h1 className="auctions-title">Auction</h1></div>
+        <div className="page-hed"><p className="eyebrow">Live Now</p><h1 className="col-title">Auction</h1><p className="sub">One piece. Highest bid wins.</p></div>
         <p className="auctions-empty">No active auctions right now. Check back soon.</p>
       </div>
     );
@@ -33,6 +33,7 @@ export default function AuctionsClient() {
 
   return (
     <div className="auctions-page">
+      <div className="page-hed"><p className="eyebrow">Live Now</p><h1 className="col-title">Auction</h1><p className="sub">One piece. Highest bid wins.</p></div>
       <AuctionClient auction={featured} />
       {rest.length > 0 && (
         <div className="auctions-more">
