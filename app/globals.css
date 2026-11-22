@@ -49,10 +49,16 @@ section.band.first{border-top:none;}
 .artist-note{text-align:center;margin-top:26px;color:var(--text2);font-size:13.5px;}
 
 /* ── Crown band ── */
-.crown-band{position:relative;overflow:hidden;padding:0!important;border-top:none!important;}
-.crown-bg{position:absolute;inset:0;background-size:cover;background-position:center center;z-index:0;}
-.crown-bg::after{content:'';position:absolute;inset:0;background:linear-gradient(to right,rgba(10,10,10,.92) 0%,rgba(10,10,10,.75) 45%,rgba(10,10,10,.1) 100%);}
-.crown-overlay{position:relative;z-index:1;padding:clamp(48px,8vw,96px) clamp(16px,5vw,60px);max-width:580px;}
+.crown-band{padding:0!important;border-top:none!important;}
+.crown-split{display:grid;grid-template-columns:1fr 1fr;min-height:520px;}
+.crown-text{padding:clamp(40px,6vw,80px) clamp(16px,5vw,56px);display:flex;flex-direction:column;justify-content:center;}
+.crown-img-col{overflow:hidden;}
+.crown-photo{width:100%;height:100%;object-fit:cover;object-position:center;display:block;}
+@media(max-width:680px){
+  .crown-split{grid-template-columns:1fr;}
+  .crown-img-col{height:280px;}
+  .crown-photo{object-position:center top;}
+}
 .crown-serial{font-family:var(--display);font-size:11px;letter-spacing:.25em;text-transform:uppercase;color:var(--gold);margin-bottom:14px;}
 .crown-story-title{font-family:var(--display);font-weight:800;font-size:clamp(2rem,6vw,3.6rem);color:var(--white);line-height:.95;letter-spacing:-.01em;margin-bottom:24px;}
 .crown-story{font-size:14.5px;color:var(--text);line-height:1.75;max-width:520px;margin-bottom:14px;}
