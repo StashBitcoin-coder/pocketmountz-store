@@ -36,7 +36,21 @@ export default async function Home() {
       <Header />
       <div className="wrap">
 
-        <section className="band first">
+        <section className="band crown-band first">
+          <div className="crown-bg" style={{ backgroundImage: 'url(/crown-bg.jpg)' }} />
+          <div className="crown-overlay">
+            <div className="slabel" style={{ textAlign: 'left' }}>The Crown</div>
+            <div className="crown-serial">#2 &nbsp;·&nbsp; Bitcoin Ordinal Inscription</div>
+            <h2 className="crown-story-title">To Be Continued&hellip;</h2>
+            <p className="crown-story">The second PocketMountz piece ever inscribed on Bitcoin. Made in collaboration with a small group of people who believed that somewhere along the way, collecting lost its soul — traded off for grades, slabs, and market speculation.</p>
+            <p className="crown-story">This card is the proof of concept. A real object, made by a real artist, with its existence permanently sealed on the oldest blockchain in the world. Not a certificate. Not a scan. The thing itself, proven.</p>
+            <p className="crown-story">Collecting was never supposed to be an investment strategy. It was supposed to mean something. This is where that starts again.</p>
+            {crown && <div className="pricechip crown-price">{money(crown.priceRange.minVariantPrice)}</div>}
+            {crown && <a className="btn gold crown-btn" href="/collection">View the piece</a>}
+          </div>
+        </section>
+
+        <section className="band">
           <div className="slabel">Real Fine Artists</div>
           <div className="stitle">The hands behind the work.</div>
           <div className="artistrow">
@@ -53,24 +67,6 @@ export default async function Home() {
           </div>
           <p className="artist-note">Every piece is credited, signed, and numbered. The artist is the art.</p>
         </section>
-
-        {crown ? (
-          <section className="band">
-            <div className="slabel">The Crown</div>
-            <div className="stitle">One piece. One of one.</div>
-            <div className="crown">
-              <div className="cart">
-                {crown.images.edges[0] ? <img src={crown.images.edges[0].node.url} alt={crown.title} /> : <span className="ph">PM</span>}
-              </div>
-              <div className="ct">
-                <div className="ce">Signed &middot; Authenticated on Bitcoin</div>
-                <h3>{crown.title}</h3>
-                <p>The moment, made permanent &mdash; a one-of-one fine collectable, inscribed on the Bitcoin blockchain the day it was made. The only signed piece that carries its own proof of authenticity.</p>
-                <div className="pricechip">{money(crown.priceRange.minVariantPrice)}</div>
-              </div>
-            </div>
-          </section>
-        ) : null}
 
         <section className="band">
           <div className="slabel">Why It&rsquo;s Different</div>
