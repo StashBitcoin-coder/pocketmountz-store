@@ -56,8 +56,8 @@ section.band.first{border-top:none;}
 .crown-photo{width:100%;height:100%;object-fit:cover;object-position:center;display:block;}
 @media(max-width:680px){
   .crown-split{grid-template-columns:1fr;}
-  .crown-img-col{height:280px;}
-  .crown-photo{object-position:center top;}
+  .crown-img-col{height:auto;order:-1;}
+  .crown-photo{height:auto;object-fit:unset;width:100%;}
 }
 .crown-serial{font-family:var(--display);font-size:11px;letter-spacing:.25em;text-transform:uppercase;color:var(--gold);margin-bottom:14px;}
 .crown-story-title{font-family:var(--display);font-weight:800;font-size:clamp(2rem,6vw,3.6rem);color:var(--white);line-height:.95;letter-spacing:-.01em;margin-bottom:24px;}
