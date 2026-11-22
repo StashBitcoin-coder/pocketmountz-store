@@ -59,7 +59,7 @@ section.band.first{border-top:none;}
   .crown-img-col{height:auto;order:-1;}
   .crown-photo{height:auto;object-fit:unset;width:100%;}
 }
-.crown-serial{font-family:var(--display);font-size:11px;letter-spacing:.25em;text-transform:uppercase;color:var(--gold);margin-bottom:14px;}
+.crown-serial{font-family:var(--display);font-size:11px;letter-spacing:.2em;text-transform:uppercase;color:var(--gold);white-space:nowrap;}
 .crown-story-title{font-family:var(--display);font-weight:800;font-size:clamp(2rem,6vw,3.6rem);color:var(--white);line-height:.95;letter-spacing:-.01em;margin-bottom:24px;}
 .crown-story{font-size:14.5px;color:var(--text);line-height:1.75;max-width:520px;margin-bottom:14px;}
 .crown-price{margin-top:28px;margin-bottom:16px;font-size:18px;}

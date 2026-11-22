@@ -40,9 +40,8 @@ export default async function Home() {
           <div className="crown-split">
             <div className="crown-text">
               <div className="slabel">The Crown</div>
-              <div className="crown-serial">#2 &nbsp;·&nbsp; Bitcoin Ordinal Inscription</div>
               <h2 className="crown-story-title">To Be Continued&hellip;</h2>
-              <p className="crown-story">The second PocketMountz piece ever inscribed on Bitcoin. Made in collaboration with a small group of people who believed that somewhere along the way, collecting lost its soul — traded off for grades, slabs, and market speculation.</p>
+              <p className="crown-story">The second PocketMountz piece ever inscribed on Bitcoin — <span className="crown-serial">#2&nbsp;·&nbsp;Bitcoin Ordinal Inscription</span>. Made in collaboration with a small group of people who believed that somewhere along the way, collecting lost its soul — traded off for grades, slabs, and market speculation.</p>
               <p className="crown-story">This card is the proof of concept. A real object, made by a real artist, with its existence permanently sealed on the oldest blockchain in the world. Not a certificate. Not a scan. The thing itself, proven.</p>
               <p className="crown-story">Collecting was never supposed to be an investment strategy. It was supposed to mean something. This is where that starts again.</p>
               {crown && <div className="pricechip crown-price">{money(crown.priceRange.minVariantPrice)}</div>}
